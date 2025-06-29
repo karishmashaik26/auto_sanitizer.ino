@@ -28,26 +28,38 @@ This Arduino project activates a **sanitizer pump** automatically when a hand is
 
 ## 🚦 How It Works
 
-1. IR sensor detects hand at close range (outputs LOW).
+1. IR sensor detects hand at close range (typically gives a LOW signal).
 2. Arduino activates:
-   - **LED** as status indicator
-   - **SANITIZER pin** (relay/motor) to pump sanitizer
+   - **LED** as visual indicator
+   - **Relay/Motor** to pump sanitizer
 3. When the hand is removed:
    - Both LED and pump turn OFF
 
 ---
 
-## 📂 Files
+## 💾 Arduino Code
 
-- `code/auto_sanitizer.ino` – Main Arduino sketch
+```cpp
+int IRsensor = 2;         // IR sensor input pin
+int LED = 12;             // LED output pin
+int SANITIZER = 11;       // Pump/relay output pin
 
----
+void setup() {
+  pinMode(IRsensor, INPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(SANITIZER, OUTPUT);
+}
 
-## 💡 Applications
+void loop() {
+  int statusSensor = digitalRead(IRsensor);
 
-- Touchless hand sanitizing stations  
-- School or office safety systems  
-- Covid-19 prevention measures  
-- Smart hygiene projects
+  if (statusSensor == 0) {              // Hand detected
+    digitalWrite(LED, HIGH);           // Turn on LED
+    digitalWrite(SANITIZER, HIGH);     // Activate pump
+  } else {
+    digitalWrite(LED, LOW);            // Turn off LED
+    digitalWrite(SANITIZER, LOW);      // Deactivate pump
+  }
+}
 
 
